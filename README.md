@@ -57,6 +57,143 @@ Once the application runs, it will open a local Gradio interface in your browser
 6. **Confidence Plot**: A Plotly bar graph is generated to visually display the sentiment class confidence levels.
 
 ---
+## Automatic Setup Instructions
+
+To Get Started Click the Open in Colab At the start of the README
+Conect to the Colab Servers
+Run Each Cell One by One
+After the last cell click on Gradio link
+
+## Manual Setup Instructions
+
+Follow these steps to set up the sentiment analysis project on your local machine or cloud environment.
+
+### Step 1: Install Required Libraries
+
+First, ensure that you have Python 3.7+ installed. You'll need the following Python libraries:
+
+```bash
+pip install joblib
+pip install gradio
+pip install plotly
+pip install numpy
+pip install textblob
+```
+
+### Step 2: Download the Pretrained Model and Vectorizer
+
+You can download the pretrained model and vectorizer directly from the provided links:
+
+```bash
+!wget https://github.com/AshbilShahid/Enhanced-Social-Media-Sentiment-Analysis/raw/main/sentiment_model.pkl
+!wget https://github.com/AshbilShahid/Enhanced-Social-Media-Sentiment-Analysis/raw/main/vectorizer.pkl
+```
+
+### Step 3: Load the Model and Vectorizer
+
+Load the pretrained model and vectorizer by running the following code in your notebook:
+
+```python
+import joblib
+
+# Load the trained model and vectorizer
+try:
+    model = joblib.load('/content/sentiment_model.pkl')
+    vectorizer = joblib.load('/content/vectorizer.pkl')
+    print("Model and vectorizer loaded successfully.")
+except Exception as e:
+    print(f"Error loading model or vectorizer: {e}")
+```
+
+### Step 4: Define the Sentiment Prediction Function
+
+Now, define the function that will preprocess text, generate sentiment predictions, and calculate the confidence and effectiveness scores:
+
+```python
+import numpy as np
+import re
+from textblob import TextBlob
+import plotly.graph_objects as go
+
+def preprocess_text(text):
+    text = text.lower()
+    text = re.sub(r'[^\w\s]', '', text)
+    return text
+
+def predict_sentiment(text):
+    try:
+        # Preprocess the input text
+        clean_text = preprocess_text(text)
+        
+        # Vectorize and predict
+        text_tfidf = vectorizer.transform([clean_text])
+        prediction = model.predict(text_tfidf)[0]
+        prediction_proba = model.predict_proba(text_tfidf)[0]
+        confidence_score = round(np.max(prediction_proba) * 100, 2)  # Confidence in %
+
+        # Effectiveness Calculation using TextBlob
+        polarity = TextBlob(clean_text).sentiment.polarity
+        effectiveness_score = max(0, min(100, confidence_score + (polarity * 20)))
+
+        # Improvement Suggestions
+        if effectiveness_score < 60:
+            improvement_suggestions = "Consider clearer, more vivid language to convey sentiment."
+        elif prediction == "positive":
+            improvement_suggestions = "Add emotional depth for better engagement."
+        elif prediction == "negative":
+            improvement_suggestions = "Add specific examples or context to support your point."
+        else:
+            improvement_suggestions = "Try focusing on clarity for a stronger message."
+
+        # Plotly Confidence Plot
+        labels = ["Negative", "Neutral", "Positive"]
+        fig = go.Figure(data=[go.Bar(x=labels, y=prediction_proba, marker_color=['red', 'gray', 'green'])])
+        fig.update_layout(
+            title="Sentiment Confidence Scores",
+            xaxis_title="Sentiment",
+            yaxis_title="Confidence",
+            yaxis=dict(range=[0, 1])
+        )
+
+        return prediction, f"{confidence_score}%", f"{effectiveness_score}%", improvement_suggestions, fig
+    
+    except Exception as e:
+        print(f"Error in prediction function: {e}")
+        return "Error", "Error", "Error", "Error", go.Figure()
+```
+
+### Step 5: Set Up the Gradio Interface
+
+Create a Gradio interface to allow users to interact with the model:
+
+```python
+import gradio as gr
+
+# Set up the Gradio interface with proper outputs
+interface = gr.Interface(
+    fn=predict_sentiment,
+    inputs="text",
+    outputs=[
+        gr.Textbox(label="Sentiment Prediction"),
+        gr.Textbox(label="Confidence Score (%)"),
+        gr.Textbox(label="Effectiveness Score (%)"),
+        gr.Textbox(label="Improvement Suggestions"),
+        gr.Plot(label="Confidence Plot")
+    ],
+    title="Enhanced Social Media Sentiment Analysis",
+    description="Enter text to analyze its sentiment, confidence, effectiveness, and get suggestions for improvement.",
+    examples=["I love this product!", "This is the worst experience I've ever had.", "I'm not sure about this..."]
+)
+
+# Launch the Gradio interface
+interface.launch()
+```
+
+### Step 6: Run the Application
+
+Once everything is set up, run the application by executing the notebook. Gradio will launch an interactive interface in your browser where you can input text, and the model will return sentiment predictions along with additional metrics and suggestions.
+
+
 ---
 
 ## Future Enhancements
@@ -72,7 +209,7 @@ Once the application runs, it will open a local Gradio interface in your browser
 
 If you encounter any errors, check the following:
 
-1. **Model Loading Errors**: Ensure the paths to the `1sentiment_model.pkl` and `tfidf_vectorizer.pkl` are correct and the files are not corrupted.
+1. **Model Loading Errors**: Ensure the paths to the `sentiment_model.pkl` and `vectorizer.pkl` are correct and the files are not corrupted.
 2. **Gradio Interface Issues**: Make sure that the required libraries (`gradio`, `numpy`, etc.) are installed correctly.
 3. **Plot Rendering Issues**: If the Plotly graph is not rendering correctly, ensure that your browser supports interactive JavaScript plots.
 
