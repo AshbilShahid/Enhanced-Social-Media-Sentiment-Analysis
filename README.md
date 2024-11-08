@@ -17,10 +17,9 @@ This solution falls under the Open Innovation track as it involves AI-powered se
 To run this project locally, ensure you have the following dependencies installed:
 
 i. Python: Version 3.6 or higher.
-ii. Libraries: You can install the required libraries using pip.
+2. Libraries: You can install the required libraries using pip.
 bash
-Copy code
-pip install joblib gradio numpy scikit-learn textblob plotly
+code(pip install joblib gradio numpy scikit-learn textblob plotly)
 joblib: For loading and saving machine learning models.
 gradio: For creating the user interface and deploying the sentiment analysis tool.
 numpy: For numerical operations and array manipulation.
