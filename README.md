@@ -192,6 +192,14 @@ Once everything is set up, run the application by executing the notebook. Gradio
 
 
 ---
+## Google Technologies Contributed
+
+- **TensorFlow**: While not directly used in the provided code, TensorFlow is a common framework for machine learning and have been used in the original model development.
+- **Google Colab**: Provided an easy-to-use platform for testing and development with cloud resources. TensorFlow, Plotly, and other libraries can be used seamlessly within Colab.
+- **Google Cloud Storage**: Used for storing the sentiment analysis model and vectorizer, ensuring that they can be easily accessed in the Colab environment.
+- 
+
+---
 
 ## Future Enhancements
 
