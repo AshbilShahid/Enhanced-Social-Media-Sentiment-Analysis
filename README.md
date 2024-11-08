@@ -224,7 +224,7 @@ For additional support, consult the official documentation for **Gradio**, **sci
 
 ## License
 
-This project is licensed under the ASH License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
