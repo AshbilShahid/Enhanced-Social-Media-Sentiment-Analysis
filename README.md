@@ -39,14 +39,6 @@ pip install joblib gradio numpy scikit-learn textblob plotly
 
 ---
 
-
-
----
-
-Once the application runs, it will open a local Gradio interface in your browser where you can input text and interact with the sentiment analysis tool.
-
----
-
 ## How It Works
 
 1. **Text Preprocessing**: The input text is preprocessed by converting it to lowercase and removing punctuation using a regular expression.
@@ -57,12 +49,17 @@ Once the application runs, it will open a local Gradio interface in your browser
 6. **Confidence Plot**: A Plotly bar graph is generated to visually display the sentiment class confidence levels.
 
 ---
+
 ## Automatic Setup Instructions
 
-To Get Started Click the Open in Colab At the start of the README
-Conect to the Colab Servers
-Run Each Cell One by One
-After the last cell click on Gradio link
+1. To Get Started Click the Open in Colab At the start of the README
+2. Conect to the Colab Servers
+3. Run Each Cell One by One
+4. After the last cell click on Gradio link
+
+Once the application runs, it will open a local Gradio interface in your browser where you can input text and interact with the sentiment analysis tool.
+
+---
 
 ## Manual Setup Instructions
 
